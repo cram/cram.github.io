@@ -137,8 +137,8 @@
                 (<span class="hljs-name">setf</span> fail <span class="hljs-number">0</span> pass <span class="hljs-number">0</span>)
                 (<span class="hljs-name">mapcar</span> #'run (<span class="hljs-name">reverse</span> *tests*))
                 (<span class="hljs-name">format</span> <span class="hljs-literal">t</span> <span class="hljs-string">"~&amp;~%; pass : ~a = ~5,1f% ~%; fail : ~a = ~5,1f% ~%"</span>
-                        pass (<span class="hljs-name">*</span> <span class="hljs-number">100</span> (<span class="hljs-name">/</span> pass (<span class="hljs-name">+</span> pass fail)))
-                        fail (<span class="hljs-name">*</span> <span class="hljs-number">100</span> (<span class="hljs-name">/</span> fail (<span class="hljs-name">+</span> pass fail)))))))
+                        pass (<span class="hljs-name">*</span> <span class="hljs-number">100</span> (<span class="hljs-name">/</span> pass (<span class="hljs-name">+</span> <span class="hljs-number">0.000000001</span> pass fail)))
+                        fail (<span class="hljs-name">*</span> <span class="hljs-number">100</span> (<span class="hljs-name">/</span> fail (<span class="hljs-name">+</span> <span class="hljs-number">0.000000001</span> pass fail)))))))
     )
 )</pre></div></div>
             
