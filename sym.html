@@ -2,7 +2,7 @@
 
 <html>
 <head>
-  <title>sample.lisp</title>
+  <title>sym.lisp</title>
   <meta http-equiv="content-type" content="text/html; charset=UTF-8">
   <meta name="viewport" content="width=device-width, target-densitydpi=160dpi, initial-scale=1.0; maximum-scale=1.0; user-scalable=0;">
   <link rel="stylesheet" media="all" href="docco.css" />
@@ -78,7 +78,7 @@
         
           <li id="title">
               <div class="annotation">
-                  <h1>sample.lisp</h1>
+                  <h1>sym.lisp</h1>
               </div>
           </li>
         
@@ -93,86 +93,73 @@
               
             </div>
             
-            <div class="content"><div class='highlight'><pre>#|
-
-## Loading
-
-|#
-(load "../src/boot")
+            <div class="content"><div class='highlight'><pre>(load "../src/boot")
 (reload "../src/col")
+
+(defthing sym col
+  (most 0) (mode) (_ent) (_w)
+  (cnt (make-hash-table)))
+
+(defmethod add1 ((x sym) y &amp;optional (f #'identity))
+  (with-slots (most mode cnt ent) x
+    (let* ((y (funcall f y))
+           (new (incf (gethash y cnt 0))))
+      (if (&gt; new most)
+          (setf _ent nil
+                _w   nil
+                most new
+                mode x)))))
 #|
 
-## Samples
+## Hello
 
-RLeservoir sampling.
+here 
 
 |#
+(defmethod ready ((x sym))
+  (with-slots (_ent cnt n) x
+    (unless (not (and  _ent _w))
+      (setf _ent 0
+            _w   nil)
+      (dohash (k v cnt)
+        (let ((p (/ v n)))
+          (push (cons p k) _w)
+          (decf _ent (* p (log p 2)))))
+      (setf _w
+            (sort _w ; asdasdasas reverse the index
+                  #'(lambda (a b)
+                      (&gt; (first a) (first b))))))))
 
- (defthing sample col
-    (now   -1)
-    (sorted nil)
-    (most   64)
-    (all    (make-array 64 :initial-element nil) ))
+(defun ent ((x sym))
+  (update x)
+  (? x _ent))
+  
+(defun sym* (lst &amp;optional (f #'identity))
+  (adds (make-instance 'sym) lst f))
 
-(defun sample0 (&amp;optional (max 256))
-  (let ((x (make-instance 'sample :most max)))
-    (setf (? x all)
-           (make-array max :initial-element  nil))
-    x))
+(defmethod copy ((old sym))
+  (with-slots (cnt) old
+    (let ((h   (make-hash-table))
+          (new (make-instance 'sym)))
+      (copier old new n most mode _ent)
+      (dohash (k v cnt new)
+        (setf (gethash k (slot-value new 'cnt))  v)))))
 
-(defmethod add1 ((x sample) y &amp;optional (f #'identity))
-  (with-slots (now most n all sorted)  x
-    (setf sorted nil
-          y      (funcall f y))
-    (cond ((&lt; now (1- most))
-           (setf (aref all (incf now)) y))
-          ((&lt; (randf) (/ now n))
-           (setf (aref all (randi now)) y)))))
+(defmethod print-object ((x sym) src)
+  (with-slots (n most mode _ent cnt) x
+    (format
+     src "~a"
+     `((n  . ,n) (most . ,most) (mode . ,mode)
+       (_ent  . ,end) (cnt . ,(hash-table-count cnt))))))
 
-(defmethod contents ((x sample))
-  (coerce (subseq (? x all) 0 (1+ (? x now))) 'list))
-
-(defmethod sorted-contents ((x sample)) 
-  (if (? x sorted)
-      (contents x)
-      (let ((ordered (sort (contents x) #'&lt;)))
-        (doitems (one n ordered)
-            (setf (aref (? x all) n) one))
-        (setf (? x sorted) t)
-        ordered)))
-
-(defmethod tiles ((x sample) &amp;key (jump 20) (start 10))
-  (let* ((lst   (sorted-contents x))
-         (n     (? x now))
-         (jump  (1+ (floor (* (/ jump   100) n))))
-         (now   (1+ (floor (* (/ start  100) n))))
-         (out))
-    (print `(jump ,jump now ,now))
-    (while (&lt; now n)
-      (push (aref (? x all) now) out)
-      (incf now jump))
-    (reverse out)))
-    
-(defun sample* (lst &amp;optional (f #'identity))
-  (adds (sample0) lst f))
-
-(defmethod copy ((old sample))
-  (let ((new (sample0)))
-    (copier old new now sorted most n)
-    (setf (slot-value new 'all)
-          (copy-list (slot-value old 'all)))))
-     
-(defmethod print-object ((x sample)  src)
-  (with-slots (now sorted most n all) x
-    (format src "~a"
-            `(sample (n   . ,n)    (sorted . ,sorted)
-                     (most. ,most) (now    . ,now)
-                     (all . ,(length all))))))
-
-(defmethod any ((x sample))
-  (aref (? x all)
-        (randi
-         (1- (length (? x all))))))</pre></div></div>
+(defmethod any ((x sym) &amp;aux x1 x2 (w 1))
+  (ready x)
+  (while (&gt;= w 1)
+      (setf x1 (- (* 2 (randf) 1))
+            x2 (- (* 2 (randf) 1))
+            w  (+ (* x1 x1) (* x2 x2))))
+  (with-slots (mu sd) x
+    (+ mu (* sd w x1 (sqrt (/ (* -2 (log w)) w))))))</pre></div></div>
             
         </li>
         
