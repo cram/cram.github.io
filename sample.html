@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+  <title>sample.lisp</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <meta name="viewport" content="width=device-width, target-densitydpi=160dpi, initial-scale=1.0; maximum-scale=1.0; user-scalable=0;">
+  <link rel="stylesheet" media="all" href="docco.css" />
+</head>
+<body>
+  <div id="container">
+    <div id="background"></div>
+    
+      <ul id="jump_to">
+        <li>
+          <a class="large" href="javascript:void(0);">Jump To &hellip;</a>
+          <a class="small" href="javascript:void(0);">+</a>
+          <div id="jump_wrapper">
+          <div id="jump_page_wrapper">
+            <div id="jump_page">
+              
+                
+                <a class="source" href="abcd.html">
+                  abcd.lisp
+                </a>
+              
+                
+                <a class="source" href="boot.html">
+                  boot.lisp
+                </a>
+              
+                
+                <a class="source" href="col.html">
+                  col.lisp
+                </a>
+              
+                
+                <a class="source" href="div.html">
+                  div.lisp
+                </a>
+              
+                
+                <a class="source" href="fft.html">
+                  fft.lisp
+                </a>
+              
+                
+                <a class="source" href="lib.html">
+                  lib.lisp
+                </a>
+              
+                
+                <a class="source" href="num.html">
+                  num.lisp
+                </a>
+              
+                
+                <a class="source" href="sample.html">
+                  sample.lisp
+                </a>
+              
+                
+                <a class="source" href="weather.html">
+                  weather.lisp
+                </a>
+              
+            </div>
+          </div>
+        </li>
+      </ul>
+    
+    <ul class="sections">
+        
+          <li id="title">
+              <div class="annotation">
+                  <h1>sample.lisp</h1>
+              </div>
+          </li>
+        
+        
+        
+        <li id="section-1">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-1">&#182;</a>
+              </div>
+              
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>#|
+
+## Loading
+
+|#
+(load "../src/boot")
+(reload "../src/col")
+#|
+
+## Samples
+
+RLeservoir sampling.
+
+|#
+
+(let ((max 256))
+  (defthing sample thing
+    (now   -1)
+    (sorted nil)
+    (most   max)
+    (all    (make-array max :initial-element nil))))
+
+(defmethod add1 ((x sample) y &amp;optional (f #'identity))
+  (with-slots (size max all sorted) x
+    (let ((pos (cond
+                 ((&lt; size (1- max))      (incf size))
+                 ((&lt; (randf) (/ size n)) (randi max)))))
+      (setf (aref all pos) (funcall f y)
+            sorted nil))))
+
+(defun sample* (lst &amp;optional (f #'identity))
+  (adds (make-instance 'sample) lst f))
+
+(defmethod copy ((old num))
+  (let ((new (make-instance 'sample)))
+    (copier old new max n)
+    (setf (slot-value new 'all)
+          (copy-list (slot-value old 'all)))))
+     
+(defmethod print-object ((x sample)  src)
+  (with-slots (n pos txt w mu m2 lo hi) x
+    (format
+     src "~a"
+     `(sample (n   . ,(? x n))
+              (all . ,(length (? x all)))))))
+
+(defmethod any ((x sample))
+  (aref (? x all)
+        (random (length *list*)) *list*))  
+  (while (&gt;= w 1)
+      (setf x1 (- (* 2 (randf) 1))
+            x2 (- (* 2 (randf) 1))
+            w  (+ (* x1 x1) (* x2 x2))))
+  (with-slots (mu sd) x
+    (+ mu (* sd w x1 (sqrt (/ (* -2 (log w)) w))))))</pre></div></div>
+            
+        </li>
+        
+    </ul>
+  </div>
+</body>
+</html>
