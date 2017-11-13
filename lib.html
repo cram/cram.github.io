@@ -126,7 +126,11 @@
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>(<span class="hljs-name">defmacro</span> doitems ((<span class="hljs-name">one</span> n list <span class="hljs-symbol">&amp;optional</span> out) <span class="hljs-symbol">&amp;body</span> body )
+            <div class="content"><div class='highlight'><pre>(<span class="hljs-name">defmacro</span> aif (<span class="hljs-name">test</span> then <span class="hljs-symbol">&amp;optional</span> else)
+  `(let ((it ,test))
+     (if it ,then ,else)))
+
+(<span class="hljs-name">defmacro</span> doitems ((<span class="hljs-name">one</span> n list <span class="hljs-symbol">&amp;optional</span> out) <span class="hljs-symbol">&amp;body</span> body )
   <span class="hljs-string">"Set 'one' and 'n' to each item in a list, and its position."</span>
   `(let ((,n <span class="hljs-number">-1</span>))
      (dolist (,one ,list ,out)
@@ -186,6 +190,7 @@
     (<span class="hljs-name">let</span> ((<span class="hljs-name">div</span> (<span class="hljs-name">expt</span> <span class="hljs-number">10</span> precision)))
       (<span class="hljs-name">float</span> (<span class="hljs-name">/</span> (<span class="hljs-name">funcall</span> what (<span class="hljs-name">*</span> number div)) div))))
 
+(<span class="hljs-name">defun</span> r4 (<span class="hljs-name">n</span>) (<span class="hljs-name">round-to</span> n <span class="hljs-number">4</span>))
 (<span class="hljs-name">defun</span> r2 (<span class="hljs-name">n</span>) (<span class="hljs-name">round-to</span> n <span class="hljs-number">2</span>))
 (<span class="hljs-name">defun</span> r0 (<span class="hljs-name">n</span>) (<span class="hljs-name">round-to</span> n <span class="hljs-number">0</span>))</pre></div></div>
             
@@ -203,7 +208,20 @@
             </div>
             
             <div class="content"><div class='highlight'><pre>(<span class="hljs-name">defun</span> l-&gt;a (<span class="hljs-name">lst</span>)
-  (<span class="hljs-name">make-array</span> (<span class="hljs-name">length</span> lst) <span class="hljs-symbol">:initial-contents</span> lst))</pre></div></div>
+  (<span class="hljs-name">make-array</span> (<span class="hljs-name">length</span> lst) <span class="hljs-symbol">:initial-contents</span> lst))
+
+(<span class="hljs-name">defun</span> a-&gt;l (<span class="hljs-name">a</span> <span class="hljs-symbol">&amp;key</span> (<span class="hljs-name">start</span> <span class="hljs-number">0</span>) (<span class="hljs-name">stop</span> (<span class="hljs-number">1</span>- (<span class="hljs-name">length</span> a))))
+  (<span class="hljs-name">coerce</span> (<span class="hljs-name">subseq</span> a start stop) 'list))
+
+(<span class="hljs-name">labels</span>
+    ((<span class="hljs-name">s-&gt;x</span> (<span class="hljs-name">str</span> <span class="hljs-symbol">&amp;optional</span> (<span class="hljs-name">reader</span> #'read-char))
+       (<span class="hljs-name">if</span> (<span class="hljs-name">not</span> (<span class="hljs-name">streamp</span> str))
+           (<span class="hljs-name">s-&gt;x</span> (<span class="hljs-name">make-string-input-stream</span> str) reader)
+           (<span class="hljs-name">if</span> (<span class="hljs-name">listen</span> str)
+               (<span class="hljs-name">cons</span> (<span class="hljs-name">funcall</span> reader str)
+                     (<span class="hljs-name">s-&gt;x</span>    str reader))))))
+  (<span class="hljs-name">defun</span> s-&gt;w (<span class="hljs-name">str</span>) (<span class="hljs-name">s-&gt;x</span> str  #'read))
+  (<span class="hljs-name">defun</span> s-&gt;l (<span class="hljs-name">str</span>) (<span class="hljs-name">s-&gt;x</span> str  #'read-char)))</pre></div></div>
             
         </li>
         

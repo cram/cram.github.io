@@ -101,10 +101,9 @@
   (<span class="hljs-name">lo</span> most-positive-fixnum)
   (<span class="hljs-name">hi</span> most-negative-fixnum))
 
-(<span class="hljs-name">defmethod</span> add1 ((<span class="hljs-name">x</span> num) y <span class="hljs-symbol">&amp;optional</span> (<span class="hljs-name">f</span> #'identity))
+(<span class="hljs-name">defmethod</span> add1 ((<span class="hljs-name">x</span> num) y)
   (<span class="hljs-name">with-slots</span> (<span class="hljs-name">hi</span> lo n mu m2 sd) x
-    (<span class="hljs-name">let*</span> ((<span class="hljs-name">y</span>     (<span class="hljs-name">funcall</span> f y))
-           (<span class="hljs-name">delta</span> (<span class="hljs-name">-</span> y mu)))
+    (<span class="hljs-name">let*</span> ((<span class="hljs-name">delta</span> (<span class="hljs-name">-</span> y mu)))
       (<span class="hljs-name">setf</span> lo (<span class="hljs-name">min</span> lo y)
             hi (<span class="hljs-name">max</span> hi y)
             mu (<span class="hljs-name">+</span> mu (<span class="hljs-name">/</span> delta n))

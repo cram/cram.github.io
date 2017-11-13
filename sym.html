@@ -2,7 +2,7 @@
 
 <html>
 <head>
-  <title>Hello</title>
+  <title>sym.lisp</title>
   <meta http-equiv="content-type" content="text/html; charset=UTF-8">
   <meta name="viewport" content="width=device-width, target-densitydpi=160dpi, initial-scale=1.0; maximum-scale=1.0; user-scalable=0;">
   <link rel="stylesheet" media="all" href="docco.css" />
@@ -76,6 +76,12 @@
     
     <ul class="sections">
         
+          <li id="title">
+              <div class="annotation">
+                  <h1>sym.lisp</h1>
+              </div>
+          </li>
+        
         
         
         <li id="section-1">
@@ -94,51 +100,14 @@
   (<span class="hljs-name">most</span> <span class="hljs-number">0</span>) (<span class="hljs-name">mode</span>) (<span class="hljs-name">_ent</span>) (<span class="hljs-name">_w</span>)
   (<span class="hljs-name">cnt</span> (<span class="hljs-name">make-hash-table</span>)))
 
-(<span class="hljs-name">defmethod</span> add1 ((<span class="hljs-name">x</span> sym) y <span class="hljs-symbol">&amp;optional</span> (<span class="hljs-name">f</span> #'identity))
-  (<span class="hljs-name">with-slots</span> (<span class="hljs-name">most</span> mode cnt ent) x
-    (<span class="hljs-name">let*</span> ((<span class="hljs-name">y</span> (<span class="hljs-name">funcall</span> f y))
-           (<span class="hljs-name">new</span> (<span class="hljs-name">incf</span> (<span class="hljs-name">gethash</span> y cnt <span class="hljs-number">0</span>))))
+(<span class="hljs-name">defmethod</span> add1 ((<span class="hljs-name">x</span> sym) y)
+  (<span class="hljs-name">with-slots</span> (<span class="hljs-name">most</span> mode cnt _w _ent) x
+    (<span class="hljs-name">let*</span> ((<span class="hljs-name">new</span> (<span class="hljs-name">incf</span> (<span class="hljs-name">gethash</span> y cnt <span class="hljs-number">0</span>))))
       (<span class="hljs-name">if</span> (<span class="hljs-name">&gt;</span> new most)
           (<span class="hljs-name">setf</span> _ent <span class="hljs-literal">nil</span>
                 _w   <span class="hljs-literal">nil</span>
                 most new
-                mode x)))))</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-2">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-2">&#182;</a>
-              </div>
-              <h1 id="hello">Hello</h1>
-<p>here  sfsdf dsf sdfsd sdf
-sdfdsd
-dfdfds
-sdfsd</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>
-(<span class="hljs-name">defmethod</span> ready ((<span class="hljs-name">x</span> sym))
-  (<span class="hljs-name">with-slots</span> (<span class="hljs-name">_ent</span> cnt n) x
-    (<span class="hljs-name">unless</span> (<span class="hljs-name">not</span> (<span class="hljs-name">and</span>  _ent _w))
-      (<span class="hljs-name">setf</span> _ent <span class="hljs-number">0</span>
-            _w   <span class="hljs-literal">nil</span>)
-      (<span class="hljs-name">dohash</span> (<span class="hljs-name">k</span> v cnt)
-        (<span class="hljs-name">let</span> ((<span class="hljs-name">p</span> (<span class="hljs-name">/</span> v n)))
-          (<span class="hljs-name">push</span> (<span class="hljs-name">cons</span> p k) _w)
-          (<span class="hljs-name">decf</span> _ent (<span class="hljs-name">*</span> p (<span class="hljs-name">log</span> p <span class="hljs-number">2</span>)))))
-      (<span class="hljs-name">setf</span> _w
-            (<span class="hljs-name">sort</span> _w <span class="hljs-comment">; asdasdasas reverse the index</span>
-                  #'(lambda (a b)
-                      (&gt; (first a) (first b))))))))
-
-(<span class="hljs-name">defun</span> ent ((<span class="hljs-name">x</span> sym))
-  (<span class="hljs-name">update</span> x)
-  (? x _ent))
+                mode y)))))
   
 (<span class="hljs-name">defun</span> sym* (<span class="hljs-name">lst</span> <span class="hljs-symbol">&amp;optional</span> (<span class="hljs-name">f</span> #'identity))
   (<span class="hljs-name">adds</span> (<span class="hljs-name">make-instance</span> 'sym) lst f))
@@ -149,23 +118,40 @@ sdfsd</p>
           (<span class="hljs-name">new</span> (<span class="hljs-name">make-instance</span> 'sym)))
       (<span class="hljs-name">copier</span> old new n most mode _ent)
       (<span class="hljs-name">dohash</span> (<span class="hljs-name">k</span> v cnt new)
-        (<span class="hljs-name">setf</span> (<span class="hljs-name">gethash</span> k (<span class="hljs-name">slot-value</span> new 'cnt))  v)))))
+        (<span class="hljs-name">setf</span> (<span class="hljs-name">gethash</span> k (<span class="hljs-name">slot-value</span> new 'cnt)) v)))))
 
 (<span class="hljs-name">defmethod</span> print-object ((<span class="hljs-name">x</span> sym) src)
   (<span class="hljs-name">with-slots</span> (<span class="hljs-name">n</span> most mode _ent cnt) x
-    (<span class="hljs-name">format</span>
-     src <span class="hljs-string">"~a"</span>
-     `((n  . ,n) (most . ,most) (mode . ,mode)
-       (_ent  . ,end) (cnt . ,(hash-table-count cnt))))))
+    (<span class="hljs-name">format</span> src <span class="hljs-string">"~a"</span>
+            `(sym
+              (n     . ,n)     (most . ,most)
+              (mode . ,mode)   (_ent  . ,_ent)
+              (cnt  . ,(hash-table-count cnt))))))
 
-(<span class="hljs-name">defmethod</span> any ((<span class="hljs-name">x</span> sym) <span class="hljs-symbol">&amp;aux</span> x1 x2 (<span class="hljs-name">w</span> <span class="hljs-number">1</span>))
+(<span class="hljs-name">defmethod</span> ready ((<span class="hljs-name">x</span> sym) <span class="hljs-symbol">&amp;aux</span> (<span class="hljs-name">e</span> <span class="hljs-number">0</span>) w)
+  (<span class="hljs-name">with-slots</span> (<span class="hljs-name">_ent</span> cnt n _w) x
+    (<span class="hljs-name">unless</span> _w
+      (<span class="hljs-name">dohash</span> (<span class="hljs-name">k</span> v cnt)
+        (<span class="hljs-name">let</span> ((<span class="hljs-name">p</span> (<span class="hljs-name">/</span> v n)))
+          (<span class="hljs-name">push</span> (<span class="hljs-name">cons</span> (<span class="hljs-name">/</span> v n) k) w)
+          (<span class="hljs-name">decf</span> e (<span class="hljs-name">*</span> p (<span class="hljs-name">log</span> p <span class="hljs-number">2</span>)))))
+      (<span class="hljs-name">setf</span> _ent e
+            _w   (<span class="hljs-name">sort</span> w #'&gt; <span class="hljs-symbol">:key</span> #'first)))))
+
+(<span class="hljs-name">defmethod</span> ent ((<span class="hljs-name">x</span> sym))
   (<span class="hljs-name">ready</span> x)
-  (<span class="hljs-name">while</span> (<span class="hljs-name">&gt;=</span> w <span class="hljs-number">1</span>)
-      (<span class="hljs-name">setf</span> x1 (<span class="hljs-name">-</span> (<span class="hljs-name">*</span> <span class="hljs-number">2</span> (<span class="hljs-name">randf</span>) <span class="hljs-number">1</span>))
-            x2 (<span class="hljs-name">-</span> (<span class="hljs-name">*</span> <span class="hljs-number">2</span> (<span class="hljs-name">randf</span>) <span class="hljs-number">1</span>))
-            w  (<span class="hljs-name">+</span> (<span class="hljs-name">*</span> x1 x1) (<span class="hljs-name">*</span> x2 x2))))
-  (<span class="hljs-name">with-slots</span> (<span class="hljs-name">mu</span> sd) x
-    (<span class="hljs-name">+</span> mu (<span class="hljs-name">*</span> sd w x1 (<span class="hljs-name">sqrt</span> (<span class="hljs-name">/</span> (<span class="hljs-name">*</span> <span class="hljs-number">-2</span> (<span class="hljs-name">log</span> w)) w))))))</pre></div></div>
+  (? x _ent))
+
+(<span class="hljs-name">defmethod</span> any ((<span class="hljs-name">x</span> sym) <span class="hljs-symbol">&amp;aux</span> v k (<span class="hljs-name">n</span> (<span class="hljs-name">randf</span>)))
+  (<span class="hljs-name">ready</span> x)
+  (<span class="hljs-name">let</span> ((<span class="hljs-name">lst</span>  (? x _w)))
+    (<span class="hljs-name">while</span> (<span class="hljs-name">and</span> lst (<span class="hljs-name">&gt;</span> n <span class="hljs-number">0</span>))
+      (<span class="hljs-name">setf</span>  v   (<span class="hljs-name">caar</span> lst)
+             k   (<span class="hljs-name">cdar</span> lst)
+             n   (<span class="hljs-name">-</span> n v)
+             lst (<span class="hljs-name">cdr</span> lst)))
+             
+    k))</pre></div></div>
             
         </li>
         

@@ -99,8 +99,8 @@
 (<span class="hljs-name">defthing</span> col thing
   (<span class="hljs-name">txt</span> <span class="hljs-string">""</span>) (<span class="hljs-name">pos</span> <span class="hljs-number">0</span>) (<span class="hljs-name">n</span> <span class="hljs-number">0</span>) (<span class="hljs-name">w</span> <span class="hljs-number">1</span>))
  
-(<span class="hljs-name">defmethod</span> add1((<span class="hljs-name">x</span> col) y <span class="hljs-symbol">&amp;optional</span> f)
-  (<span class="hljs-name">declare</span> (<span class="hljs-name">ignore</span> x y f))
+(<span class="hljs-name">defmethod</span> add1((<span class="hljs-name">x</span> col) y)
+  (<span class="hljs-name">declare</span> (<span class="hljs-name">ignore</span> x y))
   (<span class="hljs-name">assert</span> <span class="hljs-literal">nil</span> () <span class="hljs-string">"add1 should be implemented by subclass"</span>))
 
 (<span class="hljs-name">defmethod</span> norm1((<span class="hljs-name">x</span> col) y)

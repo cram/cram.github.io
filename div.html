@@ -148,7 +148,7 @@
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>(<span class="hljs-name">defun</span> superranges1 (<span class="hljs-name">arr</span> f epsilon <span class="hljs-symbol">&amp;aux</span> out)
+            <div class="content"><div class='highlight'><pre>(<span class="hljs-name">defun</span> superranges1 (<span class="hljs-name">arr</span> f e <span class="hljs-symbol">&amp;aux</span> out)
   <span class="hljs-string">"split array at point that minimized expected value of sd"</span>
   (<span class="hljs-name">macrolet</span> ((<span class="hljs-name">at</span> (<span class="hljs-name">n</span> v) `(slot-value (aref arr ,n) ,v)))
     (<span class="hljs-name">labels</span>
@@ -167,22 +167,17 @@
                              (<span class="hljs-name">r</span>   (<span class="hljs-name">all</span> (<span class="hljs-number">1</span>+ j) hi))
                              (<span class="hljs-name">now</span> (<span class="hljs-name">+</span> (<span class="hljs-name">sd</span> b4 l) (<span class="hljs-name">sd</span> b4 r))))
                         (<span class="hljs-name">if</span> (<span class="hljs-name">&lt;</span> now best)
-                            (<span class="hljs-name">if</span> (<span class="hljs-name">&gt;</span> (<span class="hljs-name">-</span> (<span class="hljs-name">at</span> r 'mu) (<span class="hljs-name">at</span> l 'mu))
-                                   epsilon)
+                            (<span class="hljs-name">if</span> (<span class="hljs-name">&gt;</span> (<span class="hljs-name">-</span> (<span class="hljs-name">at</span> r 'mu) (<span class="hljs-name">at</span> l 'mu)) e)
                                 (<span class="hljs-name">setf</span> best now
-                                      cut   j)))))))
+                                      cut  j)))))))
            cut)
          (<span class="hljs-name">recurse</span> (<span class="hljs-name">lo</span> cut hi)
            (<span class="hljs-name">split</span> lo        cut)
            (<span class="hljs-name">split</span> (<span class="hljs-number">1</span>+ cut)  hi))
-         (<span class="hljs-name">keep</span> (<span class="hljs-name">lo</span> hi)
-           (<span class="hljs-name">push</span> (<span class="hljs-name">coerce</span> (<span class="hljs-name">subseq</span> arr lo hi) 'list)
-                 out))
          (<span class="hljs-name">split</span> (<span class="hljs-name">lo</span> hi)
-           (<span class="hljs-name">let</span> ((<span class="hljs-name">cut</span> (<span class="hljs-name">argmin</span> lo hi)))
-             (<span class="hljs-name">if</span> cut
-                 (<span class="hljs-name">recurse</span> lo cut hi)
-                 (<span class="hljs-name">keep</span> lo hi)))))
+           (<span class="hljs-name">aif</span> (<span class="hljs-name">argmin</span> lo hi) 
+                (<span class="hljs-name">recurse</span> lo it hi)
+                (<span class="hljs-name">push</span> (<span class="hljs-name">a-&gt;l</span> arr <span class="hljs-symbol">:lo</span> lo <span class="hljs-symbol">:hi</span> hi) out)))
       (<span class="hljs-name">split</span> <span class="hljs-number">0</span> (<span class="hljs-number">1</span>- (<span class="hljs-name">length</span> arr)))
       out)))
 
