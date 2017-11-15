@@ -30,11 +30,6 @@
                 </a>
               
                 
-                <a class="source" href="col.html">
-                  col.lisp
-                </a>
-              
-                
                 <a class="source" href="div.html">
                   div.lisp
                 </a>
@@ -60,8 +55,18 @@
                 </a>
               
                 
+                <a class="source" href="summary.html">
+                  summary.lisp
+                </a>
+              
+                
                 <a class="source" href="sym.html">
                   sym.lisp
+                </a>
+              
+                
+                <a class="source" href="table.html">
+                  table.lisp
                 </a>
               
                 
@@ -259,7 +264,6 @@
   (<span class="hljs-name">if</span> (<span class="hljs-name">null</span> more-slots)
       `(slot-value ,obj ',first-slot)
       `(? (slot-value ,obj ',first-slot) ,@more-slots)))
-
 
 (<span class="hljs-name">defun</span> defslot  (<span class="hljs-name">name</span> form)
   `(,name

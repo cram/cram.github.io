@@ -30,11 +30,6 @@
                 </a>
               
                 
-                <a class="source" href="col.html">
-                  col.lisp
-                </a>
-              
-                
                 <a class="source" href="div.html">
                   div.lisp
                 </a>
@@ -60,8 +55,18 @@
                 </a>
               
                 
+                <a class="source" href="summary.html">
+                  summary.lisp
+                </a>
+              
+                
                 <a class="source" href="sym.html">
                   sym.lisp
+                </a>
+              
+                
+                <a class="source" href="table.html">
+                  table.lisp
                 </a>
               
                 
@@ -99,7 +104,7 @@
 
 |#
 (load "../src/boot")
-(reload "../src/col")
+(reload "../src/summary")
 #|
 
 ## Samples
@@ -108,7 +113,7 @@ RLeservoir sampling.
 
 |#
 
- (defthing sample col
+ (defthing sample summary
     (now   -1)
     (sorted nil)
     (most   64)
@@ -130,6 +135,16 @@ RLeservoir sampling.
 
 (defmethod contents ((x sample))
   (coerce (subseq (? x all) 0 (1+ (? x now))) 'list))
+
+(defmethod median ((x sample))
+  (let ((lst (sorted-contents x))
+        (n   (length lst))
+        (mid  (floor n 2)))
+    (if (oddp n)
+        (nth  mid lst)
+        (/ (+ (nth (1- mid) lst)
+              (nth mid lst))
+           2))))
 
 (defmethod sorted-contents ((x sample)) 
   (if (? x sorted)
