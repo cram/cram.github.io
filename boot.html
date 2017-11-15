@@ -30,11 +30,6 @@
                 </a>
               
                 
-                <a class="source" href="col.html">
-                  col.lisp
-                </a>
-              
-                
                 <a class="source" href="div.html">
                   div.lisp
                 </a>
@@ -60,8 +55,18 @@
                 </a>
               
                 
+                <a class="source" href="summary.html">
+                  summary.lisp
+                </a>
+              
+                
                 <a class="source" href="sym.html">
                   sym.lisp
+                </a>
+              
+                
+                <a class="source" href="table.html">
+                  table.lisp
                 </a>
               
                 
@@ -93,18 +98,17 @@
               
             </div>
             
-            <div class="content"><div class='highlight'><pre>(<span class="hljs-name">when</span> (<span class="hljs-name">not</span> (<span class="hljs-name">fboundp</span> 'reload))
-  (<span class="hljs-name">format</span> <span class="hljs-literal">t</span> <span class="hljs-string">";;;; ../src/boot~%"</span>)
+            <div class="content"><div class='highlight'><pre>(<span class="hljs-name">unless</span>  (<span class="hljs-name">fboundp</span> 'reload)
   
-  (<span class="hljs-name">let</span> (<span class="hljs-name">seen</span>)  
+  (<span class="hljs-name">let</span> ((<span class="hljs-name">seen</span>))  
     (<span class="hljs-name">defun</span> reload (<span class="hljs-name">f</span>)
-      (<span class="hljs-name">when</span> (<span class="hljs-name">not</span> (<span class="hljs-name">member</span> f seen))
+      (<span class="hljs-name">when</span> (<span class="hljs-name">not</span> (<span class="hljs-name">member</span> f seen <span class="hljs-symbol">:test</span> #'equalp))
         (<span class="hljs-name">push</span> f seen)
-         (<span class="hljs-name">handler-bind</span>
-             ((<span class="hljs-name">style-warning</span> #'muffle-warning))
-           (<span class="hljs-name">format</span> <span class="hljs-literal">t</span> <span class="hljs-string">";;;; ~a~%"</span> f)
-           (<span class="hljs-name">load</span> f)))))
-
+        (<span class="hljs-name">handler-bind</span>
+            ((<span class="hljs-name">style-warning</span> #'muffle-warning))
+          (<span class="hljs-name">format</span> <span class="hljs-literal">t</span> <span class="hljs-string">";;; ~a~%"</span> f)
+          (<span class="hljs-name">load</span> f)))))
+  
   (<span class="hljs-name">defparameter</span> *tests* <span class="hljs-literal">nil</span>)
 
   (<span class="hljs-name">defmacro</span> deftest (<span class="hljs-name">name</span> params  doc <span class="hljs-symbol">&amp;body</span> body)

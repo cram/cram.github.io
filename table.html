@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+  <title>table.lisp</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <meta name="viewport" content="width=device-width, target-densitydpi=160dpi, initial-scale=1.0; maximum-scale=1.0; user-scalable=0;">
+  <link rel="stylesheet" media="all" href="docco.css" />
+</head>
+<body>
+  <div id="container">
+    <div id="background"></div>
+    
+      <ul id="jump_to">
+        <li>
+          <a class="large" href="javascript:void(0);">Jump To &hellip;</a>
+          <a class="small" href="javascript:void(0);">+</a>
+          <div id="jump_wrapper">
+          <div id="jump_page_wrapper">
+            <div id="jump_page">
+              
+                
+                <a class="source" href="abcd.html">
+                  abcd.lisp
+                </a>
+              
+                
+                <a class="source" href="boot.html">
+                  boot.lisp
+                </a>
+              
+                
+                <a class="source" href="div.html">
+                  div.lisp
+                </a>
+              
+                
+                <a class="source" href="fft.html">
+                  fft.lisp
+                </a>
+              
+                
+                <a class="source" href="lib.html">
+                  lib.lisp
+                </a>
+              
+                
+                <a class="source" href="num.html">
+                  num.lisp
+                </a>
+              
+                
+                <a class="source" href="sample.html">
+                  sample.lisp
+                </a>
+              
+                
+                <a class="source" href="summary.html">
+                  summary.lisp
+                </a>
+              
+                
+                <a class="source" href="sym.html">
+                  sym.lisp
+                </a>
+              
+                
+                <a class="source" href="table.html">
+                  table.lisp
+                </a>
+              
+                
+                <a class="source" href="weather.html">
+                  weather.lisp
+                </a>
+              
+            </div>
+          </div>
+        </li>
+      </ul>
+    
+    <ul class="sections">
+        
+          <li id="title">
+              <div class="annotation">
+                  <h1>table.lisp</h1>
+              </div>
+          </li>
+        
+        
+        
+        <li id="section-1">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-1">&#182;</a>
+              </div>
+              
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>(<span class="hljs-name">load</span>   <span class="hljs-string">"../src/boot"</span>)
+(<span class="hljs-name">reload</span> <span class="hljs-string">"../src/lib"</span>)
+(<span class="hljs-name">reload</span> <span class="hljs-string">"../src/num"</span>)
+(<span class="hljs-name">reload</span> <span class="hljs-string">"../src/sym"</span>)
+(<span class="hljs-name">reload</span> <span class="hljs-string">"../src/sample"</span>)
+
+(<span class="hljs-name">defthing</span> col thing
+  (<span class="hljs-name">summary</span>)
+  (<span class="hljs-name">sample</span>))
+
+(<span class="hljs-name">defthing</span> cols thing
+  (<span class="hljs-name">all</span>) (<span class="hljs-name">nums</span>) (<span class="hljs-name">syms</span>))
+
+(<span class="hljs-name">defthing</span> table thing
+  (<span class="hljs-name">xy</span> (<span class="hljs-name">make-instance</span> 'cols))
+  (<span class="hljs-name">x</span>  (<span class="hljs-name">make-instance</span> 'cols))
+  (<span class="hljs-name">y</span>  (<span class="hljs-name">make-instance</span> 'cols)))
+  
+(<span class="hljs-name">defun</span> defcol (<span class="hljs-name">tbl</span> name pos)
+  (<span class="hljs-name">labels</span>
+      ((<span class="hljs-name">summ</span> (<span class="hljs-name">s</span>) (<span class="hljs-name">make-instance</span>
+                  <span class="hljs-symbol">:summary</span> s
+                  <span class="hljs-symbol">:sample</span>  (<span class="hljs-name">make-instance</span> 'sample)))
+       (<span class="hljs-name">num</span>  ()  (<span class="hljs-name">summ</span> (<span class="hljs-name">make-instance</span> 'num <span class="hljs-symbol">:name</span> name <span class="hljs-symbol">:pos</span> pos)))
+       (<span class="hljs-name">sym</span>  ()  (<span class="hljs-name">summ</span> (<span class="hljs-name">make-instance</span> 'sym <span class="hljs-symbol">:name</span> name <span class="hljs-symbol">:pos</span> pos)))
+       (<span class="hljs-name">doit</span> (<span class="hljs-name">col</span> list-of-slots)
+         (<span class="hljs-name">dolist</span> (<span class="hljs-name">slots</span> list-of-slots)
+           (<span class="hljs-name">change</span> #'(lambda (slot) (cons col slot))
+                   tbl slots))))
+    (<span class="hljs-name">case</span>
+        (<span class="hljs-name">char</span> (<span class="hljs-name">symbol-name</span> name) <span class="hljs-number">0</span>)
+      (<span class="hljs-name">#</span>\&gt; (<span class="hljs-name">doit</span> (<span class="hljs-name">num</span>) '((xy all) (xy nums) (y all) (y nums) (more)   )))
+      (<span class="hljs-name">#</span>\&lt; (<span class="hljs-name">doit</span> (<span class="hljs-name">num</span>) '((xy all) (xy nums) (y all) (y nums) (less)   )))
+      (<span class="hljs-name">#</span>\$ (<span class="hljs-name">doit</span> (<span class="hljs-name">num</span>) '((xy all) (xy nums) (x all) (x nums)          )))
+      (<span class="hljs-name">#</span>\! (<span class="hljs-name">doit</span> (<span class="hljs-name">sym</span>) '((xy all) (xy syms) (y all) (y syms) (klasses))))
+      (<span class="hljs-name">t</span>   (<span class="hljs-name">doit</span> (<span class="hljs-name">sym</span>) '((xy all) (xy syms) (x all) (x syms)       ))))))
+
+(<span class="hljs-name">defun</span> deftable1 (<span class="hljs-name">name</span> cols rows)
+  (<span class="hljs-name">let</span> ((<span class="hljs-name">tb</span> (<span class="hljs-name">make-instance</span> 'tbl <span class="hljs-symbol">:name</span> name <span class="hljs-symbol">:cols</span> cols)))
+    (<span class="hljs-name">doitems</span> (<span class="hljs-name">col</span> pos cols tb)
+      (<span class="hljs-name">defcol</span> tb col pos))))
+
+(<span class="hljs-name">defmacro</span> deftable (<span class="hljs-name">name</span> (<span class="hljs-name">&amp;rest</span> cols) <span class="hljs-symbol">&amp;body</span> rows)
+  `(deftable1 ',name ',cols ',rows))</pre></div></div>
+            
+        </li>
+        
+    </ul>
+  </div>
+</body>
+</html>

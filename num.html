@@ -30,11 +30,6 @@
                 </a>
               
                 
-                <a class="source" href="col.html">
-                  col.lisp
-                </a>
-              
-                
                 <a class="source" href="div.html">
                   div.lisp
                 </a>
@@ -60,8 +55,18 @@
                 </a>
               
                 
+                <a class="source" href="summary.html">
+                  summary.lisp
+                </a>
+              
+                
                 <a class="source" href="sym.html">
                   sym.lisp
+                </a>
+              
+                
+                <a class="source" href="table.html">
+                  table.lisp
                 </a>
               
                 
@@ -93,10 +98,10 @@
               
             </div>
             
-            <div class="content"><div class='highlight'><pre>(<span class="hljs-name">load</span> <span class="hljs-string">"../src/boot"</span>)
-(<span class="hljs-name">reload</span> <span class="hljs-string">"../src/col"</span>)
+            <div class="content"><div class='highlight'><pre>(<span class="hljs-name">load</span>   <span class="hljs-string">"../src/boot"</span>)
+(<span class="hljs-name">reload</span> <span class="hljs-string">"../src/summary"</span>)
 
-(<span class="hljs-name">defthing</span> num col
+(<span class="hljs-name">defthing</span> num summary
   (<span class="hljs-name">mu</span> <span class="hljs-number">0</span>) (<span class="hljs-name">m2</span> <span class="hljs-number">0</span>) (<span class="hljs-name">sd</span> <span class="hljs-number">0</span>) (<span class="hljs-name">rank</span> <span class="hljs-number">0</span>)
   (<span class="hljs-name">lo</span> most-positive-fixnum)
   (<span class="hljs-name">hi</span> most-negative-fixnum))
@@ -121,8 +126,8 @@
 (<span class="hljs-name">defmethod</span> print-object ((<span class="hljs-name">x</span> num) src)
   (<span class="hljs-name">with-slots</span> (<span class="hljs-name">n</span> pos txt w mu m2 lo hi) x
     (<span class="hljs-name">format</span> src <span class="hljs-string">"~a"</span>
-      `((n  . ,n) (pos . ,pos) (txt . ,txt) (w  . ,w)
-        (mu . ,mu) (m2 . ,m2)  (lo  . ,lo)  (hi . ,hi)))))
+      `((n  . ,n)  (pos . ,pos) (txt . ,txt) (w  . ,w)
+        (mu . ,mu) (m2  . ,m2)  (lo  . ,lo)  (hi . ,hi)))))
   
 (<span class="hljs-name">defmethod</span> nsd ((<span class="hljs-name">x</span> num) <span class="hljs-symbol">&amp;optional</span> (<span class="hljs-name">n</span> <span class="hljs-number">1</span>))
   (<span class="hljs-name">*</span> (<span class="hljs-name">slot-value</span> x 'sd) (<span class="hljs-name">/</span> (<span class="hljs-name">slot-value</span> x 'n) n)))
