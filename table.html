@@ -132,9 +132,10 @@ any of the numbers.</p>
     (<span class="hljs-name">adds</span> (? x has) y)
     (<span class="hljs-name">adds</span> (? x any) y)))
 
-(<span class="hljs-name">defmethod</span> add ((<span class="hljs-name">x</span> col) y)
-  (<span class="hljs-name">add</span> (? x has) y)
-  (<span class="hljs-name">add</span> (? x any) y))</pre></div></div>
+(<span class="hljs-name">defmethod</span> add ((<span class="hljs-name">x</span> col) y <span class="hljs-symbol">&amp;optional</span> (<span class="hljs-name">f</span> #'identity))
+  (<span class="hljs-name">let</span> ((<span class="hljs-name">y</span> (<span class="hljs-name">funcall</span> f y)))
+    (<span class="hljs-name">add</span> (? x has) y)
+    (<span class="hljs-name">add</span> (? x any) y)))</pre></div></div>
             
         </li>
         
@@ -193,6 +194,7 @@ in <code>all</code>.</p>
             
             <div class="content"><div class='highlight'><pre>
 (<span class="hljs-name">defthing</span> table thing
+  (<span class="hljs-name">name</span>)    
   (<span class="hljs-name">rows</span>) 
   (<span class="hljs-name">spec</span>)
   (<span class="hljs-name">klasses</span>) (<span class="hljs-name">less</span>) (<span class="hljs-name">more</span>)
@@ -200,17 +202,14 @@ in <code>all</code>.</p>
   (<span class="hljs-name">x</span>  (<span class="hljs-name">make-instance</span> 'cols))
   (<span class="hljs-name">y</span>  (<span class="hljs-name">make-instance</span> 'cols)))
 
-(<span class="hljs-name">defmethod</span> add ((<span class="hljs-name">tb</span> table) row)
-  (<span class="hljs-name">cond</span> 
-    ((? tb spec) 
-     (<span class="hljs-name">mapcar</span> #'add (? tb xy all) row))
-    (<span class="hljs-name">t</span>           
-     (<span class="hljs-name">setf</span> (? tb spec) row)
-     (<span class="hljs-name">doitems</span> (<span class="hljs-name">txt</span> pos row tb)
-         (<span class="hljs-name">defcol</span> tb z pos)))))
+(<span class="hljs-name">defmethod</span> add ((<span class="hljs-name">tb</span> table) (<span class="hljs-name">row</span> cons) <span class="hljs-symbol">&amp;optional</span> filter)
+  (<span class="hljs-name">declare</span>  (<span class="hljs-name">ignore</span> filter))
+  (<span class="hljs-name">push</span> (<span class="hljs-name">mapcar</span>  #'add  (? tb xy all) row)
+        (? tb rows)))
 
-(<span class="hljs-name">defmethod</span> adds ((<span class="hljs-name">tb</span> table) rows)
-  (<span class="hljs-name">mapcar</span> #'(lambda (row) (add tb row)) row))
+(<span class="hljs-name">defmethod</span> adds ((<span class="hljs-name">tb</span> table) rows <span class="hljs-symbol">&amp;optional</span> filter)
+  (<span class="hljs-name">declare</span> (<span class="hljs-name">ignore</span> filter))
+  (<span class="hljs-name">mapcar</span> #'(lambda (row) (add tb row)) rows))
 
 (<span class="hljs-name">defmethod</span> print-object ((<span class="hljs-name">obj</span> table) src)
   (<span class="hljs-name">let</span> ((<span class="hljs-name">details</span> (<span class="hljs-name">slots</span> obj klasses less more xy x y)))
@@ -231,7 +230,14 @@ in <code>all</code>.</p>
       (<span class="hljs-name">#</span>\&lt; (<span class="hljs-name">doit</span> (<span class="hljs-name">num</span>) '((xy all) (xy nums) (y all) (y nums) (less)   )))
       (<span class="hljs-name">#</span>\$ (<span class="hljs-name">doit</span> (<span class="hljs-name">num</span>) '((xy all) (xy nums) (x all) (x nums)          )))
       (<span class="hljs-name">#</span>\! (<span class="hljs-name">doit</span> (<span class="hljs-name">sym</span>) '((xy all) (xy syms) (y all) (y syms) (klasses))))
-      (<span class="hljs-name">t</span>   (<span class="hljs-name">doit</span> (<span class="hljs-name">sym</span>) '((xy all) (xy syms) (x all) (x syms)       ))))))</pre></div></div>
+      (<span class="hljs-name">t</span>   (<span class="hljs-name">doit</span> (<span class="hljs-name">sym</span>) '((xy all) (xy syms) (x all) (x syms)       ))))))
+
+(<span class="hljs-name">defun</span> table0 (<span class="hljs-name">name</span> spec)
+  (<span class="hljs-name">let</span> ((<span class="hljs-name">tb</span> (<span class="hljs-name">make-instance</span> 'table)))
+    (<span class="hljs-name">setf</span> (? tb name) name
+          (? tb spec) spec)
+    (<span class="hljs-name">doitems</span> (<span class="hljs-name">txt</span> pos spec tb)
+        (<span class="hljs-name">defcol</span> tb txt pos))))</pre></div></div>
             
         </li>
         
