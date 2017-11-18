@@ -169,14 +169,14 @@ to write new files…</p>
 </code></pre><p><strong>Step2:</strong> Write a second file `tests/xxxok.lisp’. Ensure its first lines are</p>
 <pre><code> (<span class="hljs-name">load</span> <span class="hljs-string">"../src/lib"</span>)
  (<span class="hljs-name">reload</span> <span class="hljs-string">"../src/xxx"</span>)
-</code></pre><p><strong>IMPORTANTL</strong> Note the <code>reload</code> command: this loads a file, but only if it has not been used before.<br>So all your code should start with one <code>load</code> command then some <code>reload</code> commands. </p>
+</code></pre><p><strong>IMPORTANT:</strong> Note the <code>reload</code> command: this loads a file, but only if it has not been used before.<br>So all your code should start with one <code>load</code> command then some <code>reload</code> commands. </p>
 <p><strong>Step3:</strong> Into <code>tests/xxxok.lisp</code>, add multiple <code>deftest</code> commands. These functions should have a
 a documentation string, then arbitrary LISP code. Any call <code>test</code> will iincrement
 counters of how many times those tests <em>pass</em> or <em>fail</em>.</p>
-<p>   (deftest r2! ()
-      “does ‘r1’ round to 2 decimal places”
-      (test 0.13 (r2 0.127456)))</p>
-<p><strong>Step4:</strong> Run the above. Create an <code>ok</code> file</p>
+<pre><code>(<span class="hljs-name">deftest</span> r2! ()
+  <span class="hljs-string">"does 'r1' round to 2 decimal places"</span>
+  (<span class="hljs-name">test</span> <span class="hljs-number">0.13</span> (<span class="hljs-name">r2</span> <span class="hljs-number">0.127456</span>)))
+</code></pre><p><strong>Step4:</strong> Run the above. Create an <code>ok</code> file</p>
 <pre><code>sh lispth xxx
 </code></pre><p>That should run the <code>xxx</code> file.</p>
 <h2 id="structure">Structure</h2>
