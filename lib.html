@@ -168,7 +168,7 @@
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>(<span class="hljs-name">defmacro</span> xslots (<span class="hljs-name">obj</span> <span class="hljs-symbol">&amp;rest</span> names)
+            <div class="content"><div class='highlight'><pre>(<span class="hljs-name">defmacro</span> slots (<span class="hljs-name">obj</span> <span class="hljs-symbol">&amp;rest</span> names)
   `(mapcar #'(lambda (name) (cons name (slot-value ,obj name))) ',names))
 
 (<span class="hljs-name">defmacro</span> copier (<span class="hljs-name">old</span> new <span class="hljs-symbol">&amp;rest</span> fields)

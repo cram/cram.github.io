@@ -113,17 +113,15 @@ RLeservoir sampling.
 
 |#
 
- (defthing sample summary
-    (now   -1)
-    (sorted nil)
-    (most   64)
-    (all    (make-array 64 :initial-element nil) ))
+(defthing sample summary
+  (now   -1)
+  (sorted nil)
+  (most   64)
+  (all))
 
-(defun sample0 (&amp;optional (max 256))
-  (let ((x (make-instance 'sample :most max)))
-    (setf (? x all)
-           (make-array max :initial-element  nil))
-    x))
+(defmethod initialize-instance :after ((x sample) &amp;key)
+  (setf (? x all)
+        (make-array (? x most) :initial-element nil)))
 
 (defmethod add1 ((x sample) y )
   (with-slots (now most n all sorted)  x
@@ -137,9 +135,9 @@ RLeservoir sampling.
   (coerce (subseq (? x all) 0 (1+ (? x now))) 'list))
 
 (defmethod median ((x sample))
-  (let ((lst (sorted-contents x))
-        (n   (length lst))
-        (mid  (floor n 2)))
+  (let* ((lst (sorted-contents x))
+         (n   (length lst))
+         (mid  (floor n 2)))
     (if (oddp n)
         (nth  mid lst)
         (/ (+ (nth (1- mid) lst)

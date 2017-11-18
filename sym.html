@@ -126,10 +126,12 @@
         (<span class="hljs-name">setf</span> (<span class="hljs-name">gethash</span> k (<span class="hljs-name">slot-value</span> new 'cnt)) v)))))
 
 (<span class="hljs-name">defmethod</span> print-object ((<span class="hljs-name">x</span> sym) src)
-  (<span class="hljs-name">with-slots</span> (<span class="hljs-name">n</span> most mode _ent cnt) x
-    (<span class="hljs-name">format</span> src <span class="hljs-string">"~a"</span>
+  (<span class="hljs-name">with-slots</span> (<span class="hljs-name">txt</span> pos n most mode _ent cnt) x
+    (<span class="hljs-name">format</span> src <span class="hljs-string">"~a"</span> 
             `(sym
-              (n     . ,n)     (most . ,most)
+              (n     . ,n)     (pos . ,pos)
+              (txt . ,txt)
+              (most . ,most)
               (mode . ,mode)   (_ent  . ,_ent)
               (cnt  . ,(hash-table-count cnt))))))
 
