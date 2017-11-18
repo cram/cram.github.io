@@ -164,7 +164,7 @@ Test=&quot;$HOME/gits/lispth/code/test&quot;
 <p>All these files know 
 that, to find  dependents, look  in either <code>../src</code> or <code>../test</code>. So,
 to write new files…</p>
-<p><strong>Step1:</strong> Write a file <code>src/xxx.lisp</code> file in <code>src/</code>. Ensire its first lines are  </p>
+<p><strong>Step1:</strong> Write a file <code>src/xxx.lisp</code> file in <code>src/</code>. Ensure its first lines are  </p>
 <pre><code> (<span class="hljs-name">load</span> <span class="hljs-string">"../src/lib"</span>) 
 </code></pre><p><strong>Step2:</strong> Write a second file `tests/xxxok.lisp’. Ensure its first lines are</p>
 <pre><code> (<span class="hljs-name">load</span> <span class="hljs-string">"../src/lib"</span>)
@@ -189,6 +189,19 @@ counters of how many times those tests <em>pass</em> or <em>fail</em>.</p>
             <div class="content"><div class='highlight'><pre>
 (<span class="hljs-name">defun</span> relad (<span class="hljs-name">file</span>)
   <span class="hljs-string">"Load file.lisp it it has not been loaded before"</span>)</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-2">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-2">&#182;</a>
+              </div>
+              <p>That’s all!</p>
+
+            </div>
             
         </li>
         
