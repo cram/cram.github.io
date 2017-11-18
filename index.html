@@ -2,7 +2,7 @@
 
 <html>
 <head>
-  <title>summary.lisp</title>
+  <title>index.lisp</title>
   <meta http-equiv="content-type" content="text/html; charset=UTF-8">
   <meta name="viewport" content="width=device-width, target-densitydpi=160dpi, initial-scale=1.0; maximum-scale=1.0; user-scalable=0;">
   <link rel="stylesheet" media="all" href="docco.css" />
@@ -100,7 +100,7 @@ data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblu
 <a href="https://lispth.github.io/LICENSE">license</a> 
 </p>
 <h1> 
-LISPTH: summary
+LISPTH: index
 </h1>
 <hr>
               </div>
@@ -114,40 +114,23 @@ LISPTH: summary
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-1">&#182;</a>
               </div>
-              
+              <p><a href="http://doi.org/10.5281/zenodo.1054269"><img src=https://zenodo.org/badge/DOI/10.5281/zenodo.1054269.svg></a></p>
+<p>One of my more effective tricks for teaching data mining (to graduate students) is to:</p>
+<ol>
+<li>give them a reference system in a language they do not know, </li>
+<li>Then make them port that code to a language that they do (e.g. Python).</li>
+</ol>
+<p>By the time that is done:</p>
+<ul>
+<li>Students have a deep understanding of the core principles invloved;</li>
+<li>Students know many of engineering decisions that might need adjusting when the code is used for real application;</li>
+<li>Students have the skills required to make, and implement, those decisions.</li>
+</ul>
+<p>So here is my reference system for my standard data mining toolkit, written in a language
+that it is <strong>very</strong> unlikely that they have ever used before.</p>
+<p>Share and enjoy.</p>
+
             </div>
-            
-            <div class="content"><div class='highlight'><pre>(<span class="hljs-name">load</span>   <span class="hljs-string">"../src/boot"</span>)
-(<span class="hljs-name">reload</span> <span class="hljs-string">"../src/lib"</span>)
-
-(<span class="hljs-name">defthing</span> summary thing
-  (<span class="hljs-name">txt</span> <span class="hljs-string">""</span>) (<span class="hljs-name">pos</span> <span class="hljs-number">0</span>) (<span class="hljs-name">n</span> <span class="hljs-number">0</span>) (<span class="hljs-name">w</span> <span class="hljs-number">1</span>))
- 
-(<span class="hljs-name">defmethod</span> add1((<span class="hljs-name">x</span> summary) y)
-  (<span class="hljs-name">declare</span> (<span class="hljs-name">ignore</span> x y))
-  (<span class="hljs-name">assert</span> <span class="hljs-literal">nil</span> () <span class="hljs-string">"add1 should be implemented by subclass"</span>))
-
-(<span class="hljs-name">defmethod</span> norm1((<span class="hljs-name">x</span> summary) y)
-  (<span class="hljs-name">declare</span> (<span class="hljs-name">ignore</span> x y))
-  (<span class="hljs-name">assert</span> <span class="hljs-literal">nil</span> () <span class="hljs-string">"norm1 should be implemented by subclass"</span>))
-
-(<span class="hljs-name">defmethod</span> add ((<span class="hljs-name">x</span> summary) y <span class="hljs-symbol">&amp;optional</span> (<span class="hljs-name">f</span> #'identity))
-  (<span class="hljs-name">with-slots</span> (<span class="hljs-name">n</span>) x
-    (<span class="hljs-name">when</span> (<span class="hljs-name">not</span> (<span class="hljs-name">eql</span> y #\?))
-      (<span class="hljs-name">incf</span> n)
-      (<span class="hljs-name">add1</span> (<span class="hljs-name">funcall</span> f x) y ))
-    y))
-
-(<span class="hljs-name">defmethod</span> adds ((<span class="hljs-name">x</span> summary) (<span class="hljs-name">ys</span> cons) <span class="hljs-symbol">&amp;optional</span> (<span class="hljs-name">f</span> #'identity))
-  (<span class="hljs-name">dolist</span> (<span class="hljs-name">y</span> ys x)
-    (<span class="hljs-name">add</span> x y f)))
-
-(<span class="hljs-name">defmethod</span> adds ((<span class="hljs-name">x</span> summary) (<span class="hljs-name">ys</span> simple-vector) <span class="hljs-symbol">&amp;optional</span> (<span class="hljs-name">f</span> #'identity))
-  (<span class="hljs-name">loop</span> for y across ys do 
-        (<span class="hljs-name">add</span> x y f)))
-  
-(<span class="hljs-name">defmethod</span> norm ((<span class="hljs-name">x</span> summary) y)
-  (<span class="hljs-name">if</span> (<span class="hljs-name">eql</span> y #\?) y (<span class="hljs-name">norm1</span> x y)))</pre></div></div>
             
         </li>
         
