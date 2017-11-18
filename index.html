@@ -55,6 +55,11 @@
                 </a>
               
                 
+                <a class="source" href="lib0.html">
+                  lib0.lisp
+                </a>
+              
+                
                 <a class="source" href="num.html">
                   num.lisp
                 </a>
@@ -134,8 +139,56 @@ LISPTH: Data Mining in Lisp
 <p>So here is my reference system for my standard data mining toolkit, written in a language
 that it is <strong>very</strong> unlikely that they have ever used before.</p>
 <p>Share and enjoy.</p>
+<h2 id="installation">Installation</h2>
+<p>The following instructions work for Mac. Probably work for LINUX as well.</p>
+<ol>
+<li>Install <code>sbcl</code>. Currently I’m using 1.4.2,</li>
+<li>Download and unzip <a href="https://github.com/lispth/code/archive/master.zip">https://github.com/lispth/code/archive/master.zip</a>;</li>
+</ol>
+<p>All the files are now in <code>src/</code> and <code>test/</code>. Most of the files in <code>src/X.lisp</code>
+have demo code or unit tests in <code>test/Xok.lisp</code>. </p>
+<p>Edit the file in the root of the distro called <code>lispth</code>. Change the following
+two lines to include the right pathnames.</p>
+<pre><code>## begin config
+
+# Where is sbcl?
+Sbcl=&quot;/usr/local/bin/sbcl&quot;
+
+# Where is the test dir?
+Test=&quot;$HOME/gits/lispth/code/test&quot;
+## end config here
+</code></pre><p>Test the install</p>
+<pre><code>sh lithp
+</code></pre><p>This should generate lots of output and no crashes.</p>
+<h2 id="writing-new-code">Writing New Code</h2>
+<p>All these files know 
+that, to find  dependents, look  in either <code>../src</code> or <code>../test</code>. So,
+to write new files…</p>
+<p><strong>Step1:</strong> Write a file <code>src/xxx.lisp</code> file in <code>src/</code>. Ensire its first lines are  </p>
+<pre><code> (<span class="hljs-name">load</span> <span class="hljs-string">"../src/lib"</span>) 
+</code></pre><p><strong>Step2:</strong> Write a second file `tests/xxxok.lisp’. Ensure its first lines are</p>
+<pre><code> (<span class="hljs-name">load</span> <span class="hljs-string">"../src/lib"</span>)
+ (<span class="hljs-name">reload</span> <span class="hljs-string">"../src/xxx"</span>)
+</code></pre><p><strong>IMPORTANTL</strong> Note the <code>reload</code> command: this loads a file, but only if it has not been used before.<br>So all your code should start with one <code>load</code> command then some <code>reload</code> commands. </p>
+<p><strong>Step3:</strong> Into <code>tests/xxxok.lisp</code>, add multiple <code>deftest</code> commands. These functions should have a
+a documentation string, then arbitrary LISP code. Any call <code>test</code> will iincrement
+counters of how many times those tests <em>pass</em> or <em>fail</em>.</p>
+<p>   (deftest r2! ()
+      “does ‘r1’ round to 2 decimal places”
+      (test 0.13 (r2 0.127456)))</p>
+<p><strong>Step4:</strong> Run the above. Create an <code>ok</code> file</p>
+<pre><code>sh lispth xxx
+</code></pre><p>That should run the <code>xxx</code> file.</p>
+<h2 id="structure">Structure</h2>
+<p>There are two parts, <em>background tools</em> and <em>core</em></p>
+<h3 id="background">Background</h3>
+<p>Defined in <code>boot.lisp</code></p>
 
             </div>
+            
+            <div class="content"><div class='highlight'><pre>
+(<span class="hljs-name">defun</span> relad (<span class="hljs-name">file</span>)
+  <span class="hljs-string">"Load file.lisp it it has not been loaded before"</span>)</pre></div></div>
             
         </li>
         
