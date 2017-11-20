@@ -123,8 +123,9 @@ data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblu
                 <a class="pilcrow" href="#section-1">&#182;</a>
               </div>
               <p>Never load this file directly. Instead, use</p>
-<pre><code>(<span class="hljs-name">load</span> <span class="hljs-string">"../src/lib"</span>)
-</code></pre>
+<pre><code> (<span class="hljs-name">load</span> <span class="hljs-string">"../src/lib"</span>)
+</code></pre><hr>
+
             </div>
             
         </li>
@@ -136,7 +137,7 @@ data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblu
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-2">&#182;</a>
               </div>
-              <p>;;; strings</p>
+              <h2 id="string-tricks">String Tricks</h2>
 
             </div>
             
@@ -154,7 +155,62 @@ data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblu
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-3">&#182;</a>
               </div>
-              <p>;;; macros</p>
+              <hr>
+
+            </div>
+            
+        </li>
+        
+        
+        <li id="section-4">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-4">&#182;</a>
+              </div>
+              <h2 id="list-tricks">List tricks</h2>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>(<span class="hljs-name">defun</span> select (<span class="hljs-name">selector-fn</span> facts)
+  <span class="hljs-string">"return all list items satisying selector-fn"</span>
+  (<span class="hljs-name">remove-if-not</span> selector-fn facts))
+
+(<span class="hljs-name">defun</span> visit (<span class="hljs-name">fn</span> l)
+  <span class="hljs-string">"apply fn to all items in nested lists"</span>
+  (<span class="hljs-name">if</span> (<span class="hljs-name">atom</span> l)
+      (<span class="hljs-name">funcall</span> fn l)
+      (<span class="hljs-name">dolist</span> (<span class="hljs-name">one</span> l)
+  (<span class="hljs-name">visit</span> fn one))))
+
+(<span class="hljs-name">defun</span> flatten (<span class="hljs-name">l</span>)
+  (<span class="hljs-name">let</span> (<span class="hljs-name">out</span>)
+    (<span class="hljs-name">visit</span> #'(lambda (one) (push one out)) l)
+    (<span class="hljs-name">reverse</span> out)))</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-5">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-5">&#182;</a>
+              </div>
+              <hr>
+
+            </div>
+            
+        </li>
+        
+        
+        <li id="section-6">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-6">&#182;</a>
+              </div>
+              <h2 id="macro-tricks">Macro Tricks</h2>
 
             </div>
             
@@ -185,36 +241,26 @@ data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblu
         </li>
         
         
-        <li id="section-4">
+        <li id="section-7">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-4">&#182;</a>
+                <a class="pilcrow" href="#section-7">&#182;</a>
               </div>
-              <p>;;;</p>
+              <hr>
 
             </div>
-            
-            <div class="content"><div class='highlight'><pre>(<span class="hljs-name">defmacro</span> slots (<span class="hljs-name">obj</span> <span class="hljs-symbol">&amp;rest</span> names)
-  `(mapcar #'(lambda (name) (cons name (slot-value ,obj name))) ',names))
-
-(<span class="hljs-name">defmacro</span> copier (<span class="hljs-name">old</span> new <span class="hljs-symbol">&amp;rest</span> fields)
-  `(with-slots ,fields ,old
-     ,@(mapcar #'(lambda (slot)
-                        `(setf (slot-value ,new ',slot) ,slot))
-               fields)
-     ,new))</pre></div></div>
             
         </li>
         
         
-        <li id="section-5">
+        <li id="section-8">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-5">&#182;</a>
+                <a class="pilcrow" href="#section-8">&#182;</a>
               </div>
-              <p>;;; maths</p>
+              <h2 id="maths-tricks">Maths Tricks</h2>
 
             </div>
             
@@ -229,13 +275,26 @@ data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblu
         </li>
         
         
-        <li id="section-6">
+        <li id="section-9">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-6">&#182;</a>
+                <a class="pilcrow" href="#section-9">&#182;</a>
               </div>
-              <p>;;; conversion</p>
+              <hr>
+
+            </div>
+            
+        </li>
+        
+        
+        <li id="section-10">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-10">&#182;</a>
+              </div>
+              <h2 id="coercion">Coercion</h2>
 
             </div>
             
@@ -258,20 +317,69 @@ data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblu
         </li>
         
         
-        <li id="section-7">
+        <li id="section-11">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-7">&#182;</a>
+                <a class="pilcrow" href="#section-11">&#182;</a>
               </div>
-              <p>;;; Simple access/update to recursive slots in LISP
-; Tested on defstructs. Should also work on instances.
-; Tim@menzies.us, Oct 2017 
-; Builds on some excellent code from “Barmar”, <a href="https://goo.gl/SQtNHd">https://goo.gl/SQtNHd</a></p>
+              <hr>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>(<span class="hljs-name">defun</span> change (<span class="hljs-name">f</span> obj slots)
+        </li>
+        
+        
+        <li id="section-12">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-12">&#182;</a>
+              </div>
+              <h2 id="defstruct-tricks">Defstruct Tricks</h2>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>(<span class="hljs-name">defmacro</span> slots (<span class="hljs-name">obj</span> <span class="hljs-symbol">&amp;rest</span> names)
+  `(mapcar #'(lambda (name) (cons name (slot-value ,obj name))) ',names))
+
+(<span class="hljs-name">defmacro</span> copier (<span class="hljs-name">old</span> new <span class="hljs-symbol">&amp;rest</span> fields)
+  `(with-slots ,fields ,old
+     ,@(mapcar #'(lambda (slot)
+                        `(setf (slot-value ,new ',slot) ,slot))
+               fields)
+     ,new))</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-13">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-13">&#182;</a>
+              </div>
+              <hr>
+
+            </div>
+            
+        </li>
+        
+        
+        <li id="section-14">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-14">&#182;</a>
+              </div>
+              <h2 id="class-slot-accessor-tricks">Class Slot Accessor Tricks</h2>
+<p>Simple access/update to recursive slots in LISP.
+Builds on some excellent code from “Barmar”, <a href="https://goo.gl/SQtNHd">https://goo.gl/SQtNHd</a></p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>
+(<span class="hljs-name">defun</span> change (<span class="hljs-name">f</span> obj slots)
   <span class="hljs-string">"Use case 1: access path for slots not known till runtime.
    In this case, pass in a function 'f' that will be used to
    update the slot found after travesing all the slots."</span>
@@ -280,10 +388,6 @@ data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblu
       (<span class="hljs-name">setf</span> (<span class="hljs-name">slot-value</span> obj (<span class="hljs-name">car</span> slots))
             (<span class="hljs-name">funcall</span> f (<span class="hljs-name">slot-value</span> obj (<span class="hljs-name">car</span> slots))))))
 
-(<span class="hljs-name">defmacro</span> with-place ((<span class="hljs-name">slot</span> obj <span class="hljs-symbol">&amp;rest</span> slots) <span class="hljs-symbol">&amp;rest</span> body)
-  `(change #'(lambda (,slot) ,@body)
-            ,obj ',slots))
-
 (<span class="hljs-name">defmacro</span> ? (<span class="hljs-name">obj</span> first-slot <span class="hljs-symbol">&amp;rest</span> more-slots)
   <span class="hljs-string">"From https://goo.gl/dqnmvH.
    Use case 2: access path known at load time.
@@ -291,6 +395,37 @@ data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblu
   (<span class="hljs-name">if</span> (<span class="hljs-name">null</span> more-slots)
       `(slot-value ,obj ',first-slot)
       `(? (slot-value ,obj ',first-slot) ,@more-slots)))
+
+(<span class="hljs-name">defmacro</span> with-place ((<span class="hljs-name">slot</span> obj <span class="hljs-symbol">&amp;rest</span> slots) <span class="hljs-symbol">&amp;rest</span> body)
+  `(change #'(lambda (,slot) ,@body)
+            ,obj ',slots))</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-15">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-15">&#182;</a>
+              </div>
+              <hr>
+
+            </div>
+            
+        </li>
+        
+        
+        <li id="section-16">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-16">&#182;</a>
+              </div>
+              
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>s Creation Tricks
 
 (<span class="hljs-name">defun</span> defslot  (<span class="hljs-name">name</span> form)
   `(,name
@@ -302,9 +437,35 @@ data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblu
 
 (<span class="hljs-name">defmacro</span> defthing (<span class="hljs-name">x</span> parent <span class="hljs-symbol">&amp;rest</span> slots)
   `(defclass ,x (,parent)
-     ,(loop for (x form) in slots collect (defslot x form))))
+     ,(loop for (x form) in slots collect (defslot x form))))</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-17">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-17">&#182;</a>
+              </div>
+              <hr>
 
+            </div>
+            
+        </li>
+        
+        
+        <li id="section-18">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-18">&#182;</a>
+              </div>
+              <h2 id="portable-random-number-generator">Portable Random Number Generator</h2>
 
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>
 (<span class="hljs-name">let*</span> ((<span class="hljs-name">seed0</span>      <span class="hljs-number">10013</span>)
        (<span class="hljs-name">seed</span>       seed0)
        (<span class="hljs-name">multiplier</span> <span class="hljs-number">16807.0d0</span>)
