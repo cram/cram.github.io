@@ -6,7 +6,7 @@
   <meta http-equiv="content-type" content="text/html; charset=UTF-8">
   <meta name="viewport" content="width=device-width, target-densitydpi=160dpi, initial-scale=1.0; maximum-scale=1.0; user-scalable=0;">
   <link rel="stylesheet" media="all" href="docco.css" />
-<link rel="shortcut icon" type="image/x-icon" href=https://raw.githubusercontent.com/lispth/code/master/etc/img/lambda.ico></head>
+<link rel="shortcut icon" type="image/x-icon" href=https://raw.githubusercontent.com/cram/code/master/etc/img/lambda.ico></head>
 <body>
   <div id="container">
     <div id="background"></div>
@@ -98,7 +98,7 @@
         
           <li id="title">
               <div class="annotation">
-<a href="https://github.com/lispth/lispth.github.io"><img z-index: 1
+<a href="https://github.com/cram/cram.github.io"><img z-index: 1
 style="position: absolute; top: 0; right: 0; border: 0;" 
 src="https://camo.githubusercontent.com/38ef81f8aca64bb9a64448d0d70f1308ef5341ab/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f6461726b626c75655f3132313632312e706e67" 
 alt="Fork me on GitHub" 
@@ -106,10 +106,10 @@ data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblu
 <img width=150 align=right src="https://avatars1.githubusercontent.com/u/33398802?s=200&v=4">
 <p>
 <a href="index.html">home</a> |
-<a href="https://github.com/lispth/code/issues">issues</a> |
-<a href="https://lispth.github.io/LICENSE">license</a> 
+<a href="https://github.com/cram/code/issues">issues</a> |
+<a href="https://cram.github.io/LICENSE">license</a> 
 </p>
-<h1> LISPTH: boot </h1>
+<h1> CRAM: boot </h1>
 <hr>
               </div>
           </li>
@@ -125,55 +125,62 @@ data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblu
               
             </div>
             
-            <div class="content"><div class='highlight'><pre>(<span class="hljs-name">unless</span>  (<span class="hljs-name">fboundp</span> 'reload)
-  
-  (<span class="hljs-name">let</span> ((<span class="hljs-name">seen</span>))  
-    (<span class="hljs-name">defun</span> reload (<span class="hljs-name">f</span>)
+            <div class="content"><div class='highlight'><pre>
+(<span class="hljs-name">defpackage</span> <span class="hljs-symbol">:cram</span>
+    (<span class="hljs-symbol">:use</span> <span class="hljs-symbol">:common-lisp</span>)
+    (<span class="hljs-symbol">:export</span> #<span class="hljs-symbol">:tests</span>))
+
+(<span class="hljs-name">in-package</span> <span class="hljs-symbol">:cram</span>)
+
+(<span class="hljs-name">format</span> <span class="hljs-literal">t</span> <span class="hljs-string">";;; ../test/boot~%"</span>)
+
+(<span class="hljs-name">let</span> ((<span class="hljs-name">seen</span>))  
+  (<span class="hljs-name">defun</span> ensure (<span class="hljs-name">&amp;rest</span> lst)
+    (<span class="hljs-name">dolist</span> (<span class="hljs-name">f</span> lst)
       (<span class="hljs-name">when</span> (<span class="hljs-name">not</span> (<span class="hljs-name">member</span> f seen <span class="hljs-symbol">:test</span> #'equalp))
         (<span class="hljs-name">push</span> f seen)
         (<span class="hljs-name">handler-bind</span>
             ((<span class="hljs-name">style-warning</span> #'muffle-warning))
           (<span class="hljs-name">format</span> <span class="hljs-literal">t</span> <span class="hljs-string">";;; ~a~%"</span> f)
-          (<span class="hljs-name">load</span> f)))))
-  
-  (<span class="hljs-name">defparameter</span> *tests* <span class="hljs-literal">nil</span>)
+          (<span class="hljs-name">load</span> f))))))
 
-  (<span class="hljs-name">defmacro</span> deftest (<span class="hljs-name">name</span> params  <span class="hljs-symbol">&amp;optional</span> (<span class="hljs-name">doc</span> <span class="hljs-string">""</span>) <span class="hljs-symbol">&amp;body</span> body)
-    <span class="hljs-string">"Create a defun, adding it name to the list of *tests*."</span>
-    `(progn
-       (unless (member ',name *tests*) (push ',name *tests*))
-       (defun ,name ,params ,doc
-              (format <span class="hljs-literal">t</span> <span class="hljs-string">"~%;;; ~a~%"</span> ',name )
-              (format <span class="hljs-literal">t</span> <span class="hljs-string">"; ~a~%"</span> ,doc)
-              ,@body
-              (terpri))))
+(<span class="hljs-name">defparameter</span> *tests* <span class="hljs-literal">nil</span>)
+
+(<span class="hljs-name">defmacro</span> deftest (<span class="hljs-name">name</span> params  <span class="hljs-symbol">&amp;optional</span> (<span class="hljs-name">doc</span> <span class="hljs-string">""</span>) <span class="hljs-symbol">&amp;body</span> body)
+  <span class="hljs-string">"Create a defun, adding it name to the list of *tests*."</span>
+  `(progn
+     (unless (member ',name *tests*) (push ',name *tests*))
+     (defun ,name ,params ,doc
+            (format <span class="hljs-literal">t</span> <span class="hljs-string">"~%;;; ~a~%"</span> ',name )
+            (format <span class="hljs-literal">t</span> <span class="hljs-string">"; ~a~%"</span> ,doc)
+            ,@body
+            (terpri))))
+
+(<span class="hljs-name">let</span> ((<span class="hljs-name">pass</span> <span class="hljs-number">0</span>)  
+      (<span class="hljs-name">fail</span> <span class="hljs-number">0</span>))
   
-  (<span class="hljs-name">let</span> ((<span class="hljs-name">pass</span> <span class="hljs-number">0</span>)  
-        (<span class="hljs-name">fail</span> <span class="hljs-number">0</span>))
-    
-    (<span class="hljs-name">defun</span> test (<span class="hljs-name">want</span> got)
-      <span class="hljs-string">"Run one test, comparing 'want' to 'got'."</span>
-      (<span class="hljs-name">labels</span>  
-          ((<span class="hljs-name">white</span> (<span class="hljs-name">c</span>)     (<span class="hljs-name">member</span> c '(#\# #\\ #\Space #\Tab #\Newline
-                                     #\Linefeed #\Return #\Page) <span class="hljs-symbol">:test</span> #'char=))
-           (<span class="hljs-name">whiteout</span> (<span class="hljs-name">s</span>)  (<span class="hljs-name">remove-if</span> #'white s)) 
-           (<span class="hljs-name">samep</span> (<span class="hljs-name">x</span> y)   (<span class="hljs-name">whiteout</span> (<span class="hljs-name">format</span> <span class="hljs-literal">nil</span> <span class="hljs-string">"~(~a~)"</span> x)) 
-                          (<span class="hljs-name">whiteout</span> (<span class="hljs-name">format</span> <span class="hljs-literal">nil</span> <span class="hljs-string">"~(~a~)"</span> y))))
-        (<span class="hljs-name">cond</span> ((<span class="hljs-name">samep</span> want got) (<span class="hljs-name">incf</span> pass))
-              (<span class="hljs-name">t</span>                (<span class="hljs-name">incf</span> fail)
-                                (<span class="hljs-name">format</span> <span class="hljs-literal">t</span> <span class="hljs-string">"~&amp;; fail : expected ~a~%"</span> want)))
-        got))
-    
-    (<span class="hljs-name">defun</span> tests ()
-      <span class="hljs-string">"Run all the tests in *tests*."</span>
-      (<span class="hljs-name">when</span> *tests*
-        (<span class="hljs-name">setf</span> fail <span class="hljs-number">0</span> pass <span class="hljs-number">0</span>)
-        (<span class="hljs-name">mapc</span> #'funcall (<span class="hljs-name">reverse</span> *tests*))
-        (<span class="hljs-name">format</span> <span class="hljs-literal">t</span> <span class="hljs-string">"~&amp;~%; pass : ~a = ~5,1f% ~%; fail : ~a = ~5,1f% ~%"</span>
-                pass (<span class="hljs-name">*</span> <span class="hljs-number">100</span> (<span class="hljs-name">/</span> pass (<span class="hljs-name">+</span> <span class="hljs-number">0.000000001</span> pass fail)))
-                fail (<span class="hljs-name">*</span> <span class="hljs-number">100</span> (<span class="hljs-name">/</span> fail (<span class="hljs-name">+</span> <span class="hljs-number">0.000000001</span> pass fail))))))
-    )
-)</pre></div></div>
+  (<span class="hljs-name">defun</span> test (<span class="hljs-name">want</span> got)
+    <span class="hljs-string">"Run one test, comparing 'want' to 'got'."</span>
+    (<span class="hljs-name">labels</span>  
+        ((<span class="hljs-name">white</span> (<span class="hljs-name">c</span>)     (<span class="hljs-name">member</span> c '(#\# #\\ #\Space #\Tab #\Newline
+                                   #\Linefeed #\Return #\Page) <span class="hljs-symbol">:test</span> #'char=))
+         (<span class="hljs-name">whiteout</span> (<span class="hljs-name">s</span>)  (<span class="hljs-name">remove-if</span> #'white s)) 
+         (<span class="hljs-name">samep</span> (<span class="hljs-name">x</span> y)   (<span class="hljs-name">whiteout</span> (<span class="hljs-name">format</span> <span class="hljs-literal">nil</span> <span class="hljs-string">"~(~a~)"</span> x)) 
+                        (<span class="hljs-name">whiteout</span> (<span class="hljs-name">format</span> <span class="hljs-literal">nil</span> <span class="hljs-string">"~(~a~)"</span> y))))
+      (<span class="hljs-name">cond</span> ((<span class="hljs-name">samep</span> want got) (<span class="hljs-name">incf</span> pass))
+            (<span class="hljs-name">t</span>                (<span class="hljs-name">incf</span> fail)
+                              (<span class="hljs-name">format</span> <span class="hljs-literal">t</span> <span class="hljs-string">"~&amp;; fail : expected ~a~%"</span> want)))
+      got))
+  
+  (<span class="hljs-name">defun</span> tests ()
+    <span class="hljs-string">"Run all the tests in *tests*."</span>
+    (<span class="hljs-name">when</span> *tests*
+      (<span class="hljs-name">setf</span> fail <span class="hljs-number">0</span> pass <span class="hljs-number">0</span>)
+      (<span class="hljs-name">mapc</span> #'funcall (<span class="hljs-name">reverse</span> *tests*))
+      (<span class="hljs-name">format</span> <span class="hljs-literal">t</span> <span class="hljs-string">"~&amp;~%; pass : ~a = ~5,1f% ~%; fail : ~a = ~5,1f% ~%"</span>
+              pass (<span class="hljs-name">*</span> <span class="hljs-number">100</span> (<span class="hljs-name">/</span> pass (<span class="hljs-name">+</span> <span class="hljs-number">0.000000001</span> pass fail)))
+              fail (<span class="hljs-name">*</span> <span class="hljs-number">100</span> (<span class="hljs-name">/</span> fail (<span class="hljs-name">+</span> <span class="hljs-number">0.000000001</span> pass fail))))))
+  )</pre></div></div>
             
         </li>
         
