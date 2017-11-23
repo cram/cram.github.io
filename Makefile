@@ -1,5 +1,5 @@
 all:
-	cd ../code; docco --layout classic src/*.lisp; 
+	cd ../code; docco --layout parallel src/*.lisp; 
 	cp -r ../code/docs/ .
 	cp ../code/etc/docco.css .
 	for i in *.html; do bash ../code/etc/htmladd.sh $$i;  done
